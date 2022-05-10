@@ -1,0 +1,16 @@
+{
+  "name": "halyard-influxdb",
+  "version": "0.0.1",
+  "author": "Les Aker",
+  "license": "MIT",
+  "summary": "Configure devices and mounts",
+  "source": "https://github.com/halyard/puppet-influxdb",
+  "project_page": "https://github.com/halyard/puppet-influxdb",
+  "issues_url": "https://github.com/halyard/puppet-influxdb/issues",
+  "dependencies": [
+
+  ],
+  "operatingsystem_support": [
+
+  ]
+}
