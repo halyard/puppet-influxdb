@@ -10,7 +10,7 @@ class influxdb (
   String $tls_account,
   Optional[String] $tls_challengealias = undef,
 ) {
-  file { [$datadir, "${datadir}/data", "${datadir}/certs"]:
+  file { ["${datadir}/data", "${datadir}/certs"]:
     ensure => directory,
   }
 
