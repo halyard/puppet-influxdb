@@ -2,4 +2,6 @@
 #
 class influxdb (
 ) {
+  include docker
+  include acme
 }
