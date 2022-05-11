@@ -1,12 +1,16 @@
 # @summary Configure InfluxDB instance
 #
+# @param hostname sets the hostname for influxdb
+# @param datadir sets where the data is persisted
+# @param tls_account sets the TLS account config
+# @param tls_challengealias sets the alias for TLS cert
 class influxdb (
   String $hostname,
   String $datadir,
   String $tls_account,
-  Optional[String] $challengealias = undef,
+  Optional[String] $tls_challengealias = undef,
 ) {
-  file { ["${datadir}", "${datadir}/data", "${datadir}/certs"]:
+  file { [$datadir, "${datadir}/data", "${datadir}/certs"]:
     ensure => directory,
   }
 
