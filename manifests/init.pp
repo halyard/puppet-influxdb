@@ -29,7 +29,12 @@ class influxdb (
 
   -> docker::container { 'influxdb':
     image => 'influxdb:latest',
-    args  => "-p 127.0.0.1:8086:8086 -v ${datadir}/data:/var/lib/influxdb2 -v ${datadir}/config.yml:/etc/influxdb2/config.yml -v ${datadir}/certs:/mnt/certs",
+    args  => [
+      "-p 127.0.0.1:8086:8086",
+      "-v ${datadir}/data:/var/lib/influxdb2",
+      "-v ${datadir}/config.yml:/etc/influxdb2/config.yml",
+      "-v ${datadir}/certs:/mnt/certs",
+    ],
     cmd   => '',
   }
 }
