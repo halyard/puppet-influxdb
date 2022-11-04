@@ -5,12 +5,22 @@
 # @param tls_account sets the TLS account config
 # @param tls_challengealias sets the alias for TLS cert
 # @param container_ip sets the address of the Docker container
+# @param backup_target sets the target repo for backups
+# @param backup_watchdog sets the watchdog URL to confirm backups are working
+# @param backup_password sets the encryption key for backup snapshots
+# @param backup_environment sets the env vars to use for backups
+# @param backup_rclone sets the config for an rclone backend
 class influxdb (
   String $hostname,
   String $datadir,
   String $tls_account,
   Optional[String] $tls_challengealias = undef,
   String $container_ip = '172.17.0.2',
+  Optional[String] $backup_target = undef,
+  Optional[String] $backup_watchdog = undef,
+  Optional[String] $backup_password = undef,
+  Optional[Hash[String, String]] $backup_environment = undef,
+  Optional[String] $backup_rclone = undef,
 ) {
   file { ["${datadir}/data", "${datadir}/certs"]:
     ensure => directory,
@@ -47,5 +57,16 @@ class influxdb (
       "-v ${datadir}/certs:/mnt/certs",
     ],
     cmd   => '',
+  }
+
+  if $backup_target != '' {
+    backup::repo { 'influxdb':
+      source         => "${datadir}/data",
+      target         => $backup_target,
+      watchdog_url   => $backup_watchdog,
+      password       => $backup_password,
+      environment    => $backup_environment,
+      rclone_options => $backup_rclone,
+    }
   }
 }
