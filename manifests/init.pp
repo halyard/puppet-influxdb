@@ -22,7 +22,7 @@ class influxdb (
   Optional[Hash[String, String]] $backup_environment = undef,
   Optional[String] $backup_rclone = undef,
 ) {
-  file { ["${datadir}/data", "${datadir}/certs"]:
+  file { [$datadir, "${datadir}/data", "${datadir}/certs"]:
     ensure => directory,
   }
 
