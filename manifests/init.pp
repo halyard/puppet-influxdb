@@ -61,12 +61,12 @@ class influxdb (
 
   if $backup_target != '' {
     backup::repo { 'influxdb':
-      source         => "${datadir}/data",
-      target         => $backup_target,
-      watchdog_url   => $backup_watchdog,
-      password       => $backup_password,
-      environment    => $backup_environment,
-      rclone_options => $backup_rclone,
+      source        => "${datadir}/data",
+      target        => $backup_target,
+      watchdog_url  => $backup_watchdog,
+      password      => $backup_password,
+      environment   => $backup_environment,
+      rclone_config => $backup_rclone,
     }
   }
 }
