@@ -2,8 +2,9 @@
 #
 # @param hostname sets the hostname for influxdb
 # @param datadir sets where the data is persisted
-# @param tls_account sets the TLS account config
-# @param tls_challengealias sets the alias for TLS cert
+# @param aws_access_key_id sets the AWS key to use for Route53 challenge
+# @param aws_secret_access_key sets the AWS secret key to use for the Route53 challenge
+# @param email sets the contact address for the certificate
 # @param container_ip sets the address of the Docker container
 # @param backup_target sets the target repo for backups
 # @param backup_watchdog sets the watchdog URL to confirm backups are working
@@ -13,8 +14,9 @@
 class influxdb (
   String $hostname,
   String $datadir,
-  String $tls_account,
-  Optional[String] $tls_challengealias = undef,
+  String $aws_access_key_id,
+  String $aws_secret_access_key,
+  String $email,
   String $container_ip = '172.17.0.2',
   Optional[String] $backup_target = undef,
   Optional[String] $backup_watchdog = undef,
@@ -22,6 +24,11 @@ class influxdb (
   Optional[Hash[String, String]] $backup_environment = undef,
   Optional[String] $backup_rclone = undef,
 ) {
+  $hook_script =  "#!/usr/bin/env bash
+cp \$LEGO_CERT_PATH ${datadir}/certs/cert
+cp \$LEGO_CERT_KEY_PATH ${datadir}/certs/key
+/usr/bin/systemctl restart container@influxdb"
+
   file { [$datadir, "${datadir}/data", "${datadir}/certs"]:
     ensure => directory,
   }
@@ -32,11 +39,10 @@ class influxdb (
   }
 
   -> acme::certificate { $hostname:
-    reloadcmd      => '/usr/bin/systemctl restart container@influxdb',
-    keypath        => "${datadir}/certs/key",
-    fullchainpath  => "${datadir}/certs/cert",
-    account        => $tls_account,
-    challengealias => $tls_challengealias,
+    hook_script           => $hook_script,
+    aws_access_key_id     => $aws_access_key_id,
+    aws_secret_access_key => $aws_secret_access_key,
+    email                 => $email,
   }
 
   -> firewall { '100 dnat for influxdb':
