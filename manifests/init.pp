@@ -65,7 +65,7 @@ cp \$LEGO_CERT_KEY_PATH ${datadir}/certs/key
     cmd   => '',
   }
 
-  if $backup_target != '' {
+  if $backup_target != undef {
     backup::repo { 'influxdb':
       source        => "${datadir}/data",
       target        => $backup_target,
