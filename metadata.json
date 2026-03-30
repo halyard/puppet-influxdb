@@ -1,16 +1,12 @@
 {
   "name": "halyard-influxdb",
-  "version": "0.0.34",
+  "version": "0.0.35",
   "author": "Les Aker",
   "license": "MIT",
   "summary": "Configure InfluxDB instance",
   "source": "https://github.com/halyard/puppet-influxdb",
   "project_page": "https://github.com/halyard/puppet-influxdb",
   "issues_url": "https://github.com/halyard/puppet-influxdb/issues",
-  "dependencies": [
-
-  ],
-  "operatingsystem_support": [
-
-  ]
+  "dependencies": [],
+  "operatingsystem_support": []
 }
